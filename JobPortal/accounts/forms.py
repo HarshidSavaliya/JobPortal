@@ -1,12 +1,7 @@
 from django import forms
-from .models import Gender_CHOICES
+from .models import Gender_CHOICES, ROLE_CHOICES
 
 class RegistrationForm(forms.Form):
-    ROLE_CHOICES = (
-        ('jobseeker', 'Job Seeker'),
-        ('recruiter', 'Recruiter'),
-    )
-
     role = forms.ChoiceField(choices=ROLE_CHOICES)
     username = forms.CharField(max_length=100)
     email = forms.EmailField()
