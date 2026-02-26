@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Welcome to the Home Page</h2>
 <p>username: {{ user.username }}</p>
+<a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
+<br>
+<a href="{% url 'post_job' %}" class="btn btn-primary">Post Job</a>
+<br>
+<a href="{% url 'update_profile' %}" class="btn btn-primary">update profile</a>
+<hr>
+
 {% endblock %}

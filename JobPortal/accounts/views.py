@@ -1,10 +1,14 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User as AuthUser
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
-from .models import UserProfile  # Import the profile model
-from .forms import RegistrationForm
+from .models import User as UserProfile , RecruiterProfile, JobSeekerProfile
+from .forms import RegistrationForm , LoginForm , UpdateUserProfileForm , UpdateJobSeekerProfileForm , UpdateRecruiterProfileForm
+from django.contrib import messages
+
+
+
 
 def index(request):
     if request.user.is_authenticated:
@@ -39,36 +43,48 @@ def register(request):
                 })
 
             # Check if username already exists
-            if User.objects.filter(username=username).exists():
+            if AuthUser.objects.filter(username=username).exists():
                 return render(request, 'register.html', {
                     'form': form,
                     'error': 'Username already exists'
                 })
 
             # Check if email already exists
-            if User.objects.filter(email=email).exists():
+            if AuthUser.objects.filter(email=email).exists():
                 return render(request, 'register.html', {
                     'form': form,
                     'error': 'Email already exists'
                 })
 
             # Create the user
-            user = User.objects.create_user(
+            auth_user = AuthUser.objects.create_user(
                 username=username,
                 email=email,
                 password=password
             )
             
             # Create the user profile
-            UserProfile.objects.create(
-                user=user,
+            profile = UserProfile.objects.create(
+                user=auth_user,
                 role=role,
+                email=email,
                 phone_number=phone_number,
                 gender=gender
             )
 
+            if role == 'recruiter':
+                RecruiterProfile.objects.create(
+                    user_profile=profile
+                )
+            else:
+                JobSeekerProfile.objects.create(
+                    user=profile
+                )
+
+            request.session['role'] = role
+
             # Log the user in
-            auth_login(request, user)
+            auth_login(request, auth_user)
             return redirect('home')
         else:
             # Form is invalid
@@ -91,13 +107,15 @@ def login(request):
             return render(request, 'login.html', {'error': 'All fields are required'})
 
         # Authenticate the user
-        user = authenticate(request, username=username, password=password)
+        auth_user = authenticate(request, username=username, password=password)
 
-        if user is None:
+        if auth_user is None:
             return render(request, 'login.html', {'error': 'Invalid username or password'})
 
         # Log the user in
-        auth_login(request, user)
+        auth_login(request, auth_user)
+        if hasattr(auth_user, 'profile'):
+            request.session['role'] = auth_user.profile.role
         return redirect('home')
     
     return render(request, 'login.html')
@@ -105,3 +123,66 @@ def login(request):
 def logout(request):
     auth_logout(request)
     return redirect('index')
+
+@login_required(login_url='login')
+def update_profile(request):
+    try:
+        user_profile = request.user.profile
+    except UserProfile.DoesNotExist:
+        messages.error(request, 'Profile record does not exist for this account.')
+        return redirect('home')
+    jobseeker_form = None
+    recruiter_form = None
+
+    if request.method == 'POST':
+        user_form = UpdateUserProfileForm(request.POST, instance=user_profile)
+
+        if user_profile.role == 'jobseeker':
+            jobseeker_profile, _ = JobSeekerProfile.objects.get_or_create(user=user_profile)
+            jobseeker_form = UpdateJobSeekerProfileForm(
+                request.POST,
+                request.FILES,
+                instance=jobseeker_profile,
+            )
+            if user_form.is_valid() and jobseeker_form.is_valid():
+                user_form.save()
+                jobseeker_form.save()
+                messages.success(request, 'Profile updated successfully.')
+                return redirect('home')
+        elif user_profile.role == 'recruiter':
+            recruiter_profile, _ = RecruiterProfile.objects.get_or_create(user_profile=user_profile)
+            recruiter_form = UpdateRecruiterProfileForm(
+                request.POST,
+                request.FILES,
+                instance=recruiter_profile,
+            )
+            if user_form.is_valid() and recruiter_form.is_valid():
+                user_form.save()
+                recruiter_form.save()
+                messages.success(request, 'Profile updated successfully.')
+                return redirect('home')
+        else:
+            messages.error(request, 'Invalid role for profile update.')
+            return redirect('home')
+    else:
+        user_form = UpdateUserProfileForm(instance=user_profile)
+
+        if user_profile.role == 'jobseeker':
+            jobseeker_profile, _ = JobSeekerProfile.objects.get_or_create(user=user_profile)
+            jobseeker_form = UpdateJobSeekerProfileForm(instance=jobseeker_profile)
+        elif user_profile.role == 'recruiter':
+            recruiter_profile, _ = RecruiterProfile.objects.get_or_create(user_profile=user_profile)
+            recruiter_form = UpdateRecruiterProfileForm(instance=recruiter_profile)
+        else:
+            messages.error(request, 'Invalid role for profile update.')
+            return redirect('home')
+
+    return render(
+        request,
+        'update_profile.html',
+        {
+            'user_form': user_form,
+            'jobseeker_form': jobseeker_form,
+            'recruiter_form': recruiter_form,
+        },
+    )

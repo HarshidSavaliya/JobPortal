@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Post Job</title>
+
+    <!-- Bootstrap (optional but recommended) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body style="background:#f5f6fa;">
+
+    <div class="container mt-5">
+        <div class="card shadow-sm p-4">
+            <h3 class="mb-4 text-center">Post a Job</h3>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <!-- Show Form Errors -->
+                {% if form.errors %}
+                <div class="alert alert-danger">
+                    {{ form.errors }}
+                </div>
+                {% endif %}
+
+                <div class="mb-3">
+                    <label>Job Title</label>
+                    {{ form.title }}
+                </div>
+
+                <div class="mb-3">
+                    <label>Job Type</label>
+                    {{ form.job_type }}
+                </div>
+
+                <div class="mb-3">
+                    <label>Job Category</label>
+                    {{ form.job_category }}
+                </div>
+
+                <div class="mb-3">
+                    <label>Job Description</label>
+                    {{ form.job_description }}
+                </div>
+
+                <div class="mb-3">
+                    <label>Company</label>
+                    {{ form.company }}
+                </div>
+
+                <div class="mb-3">
+                    <label>Location</label>
+                    {{ form.location }}
+                </div>
+
+                <div class="mb-3">
+                    <label>Salary</label>
+                    {{ form.salary }}
+                </div>
+
+                <div class="mb-3">
+                    <label>Education Requirements</label>
+                    {{ form.education_requirements }}
+                </div>
+
+                <div class="mb-3">
+                    <label>Experience Requirements</label>
+                    {{ form.experience_requirements }}
+                </div>
+
+                <div class="mb-3">
+                    <label>Skills Required</label>
+                    {{ form.skills_required }}
+                </div>
+
+                <div class="mb-3">
+                    <label>Languages Required</label>
+                    {{ form.languages_required }}
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">
+                    Post Job
+                </button>
+            </form>
+        </div>
+    </div>
+
+</body>
+
+</html>

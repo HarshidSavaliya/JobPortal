@@ -1,0 +1,261 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Profile - JobPortal</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+
+<body class="auth-page">
+
+    <div class="auth-container">
+
+        <div class="auth-card">
+
+            <div class="auth-header">
+                <div class="header-icon">
+                    <i class="fas fa-user-edit"></i>
+                </div>
+                <h2>Update Profile</h2>
+                <p>Keep your information up to date</p>
+            </div>
+
+            <div class="auth-body">
+
+                {% if error %}
+                <div class="error-messages">
+                    <p><i class="fas fa-exclamation-circle"></i> {{ error }}</p>
+                </div>
+                {% endif %}
+
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <!-- ================= PERSONAL DETAILS ================= -->
+                    <h3 class="section-title">
+                        <i class="fas fa-id-card"></i> Personal Details
+                    </h3>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-user"></i> First Name</label>
+                            {{ user_form.first_name }}
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-user"></i> Middle Name</label>
+                            {{ user_form.middle_name }}
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-user"></i> Last Name</label>
+                            {{ user_form.last_name }}
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-calendar"></i> Date of Birth</label>
+                            {{ user_form.date_of_birth }}
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-venus-mars"></i> Gender</label>
+                            {{ user_form.gender }}
+                        </div>
+                    </div>
+
+                    <!-- ================= CONTACT DETAILS ================= -->
+                    <h3 class="section-title">
+                        <i class="fas fa-address-book"></i> Contact Information
+                    </h3>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-phone"></i> Phone Number</label>
+                        {{ user_form.phone_number }}
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-envelope"></i> Email</label>
+                        {{ user_form.email }}
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-map-marker-alt"></i> Address</label>
+                        {{ user_form.address }}
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>City</label>
+                            {{ user_form.city }}
+                        </div>
+
+                        <div class="form-group">
+                            <label>State</label>
+                            {{ user_form.state }}
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Country</label>
+                            {{ user_form.country }}
+                        </div>
+
+                        <div class="form-group">
+                            <label>Zip Code</label>
+                            {{ user_form.zip_code }}
+                        </div>
+                    </div>
+
+                    <!-- ================= JOBSEEKER SECTION ================= -->
+                    {% if request.user.profile.role == 'jobseeker' %}
+
+                    <h3 class="section-title">
+                        <i class="fas fa-briefcase"></i> Professional Details
+                    </h3>
+
+                    <div class="form-group">
+                        <label>Profile Picture</label>
+                        {{ jobseeker_form.profile_picture }}
+                    </div>
+
+                    <div class="form-group">
+                        <label>Resume</label>
+                        {{ jobseeker_form.resume }}
+                    </div>
+
+                    <div class="form-group">
+                        <label>Skills</label>
+                        {{ jobseeker_form.skills }}
+                    </div>
+
+                    <div class="form-group">
+                        <label>Languages</label>
+                        {{ jobseeker_form.languages }}
+                    </div>
+
+                    <div class="form-group">
+                        <label>Projects</label>
+                        {{ jobseeker_form.projects }}
+                    </div>
+
+                    <div class="form-group">
+                        <label>Work Experience</label>
+                        {{ jobseeker_form.work_experience }}
+                    </div>
+
+                    <div class="form-group">
+                        <label>Education</label>
+                        {{ jobseeker_form.education }}
+                    </div>
+
+                    <h3 class="section-title">
+                        <i class="fas fa-link"></i> Links
+                    </h3>
+
+                    <div class="form-group">
+                        <label>LinkedIn</label>
+                        {{ jobseeker_form.linkedin }}
+                    </div>
+
+                    <div class="form-group">
+                        <label>GitHub</label>
+                        {{ jobseeker_form.github }}
+                    </div>
+
+                    {% endif %}
+
+                    <!-- ================= RECRUITER SECTION ================= -->
+                    {% if request.user.profile.role == 'recruiter' %}
+
+                    <h3 class="section-title">
+                        <i class="fas fa-building"></i> Recruiter Details
+                    </h3>
+
+                    <div class="form-group">
+                        <label>Profile Picture</label>
+                        {{ recruiter_form.profile_picture }}
+                    </div>
+
+                    <div class="form-group">
+                        <label>Experience</label>
+                        {{ recruiter_form.experience }}
+                    </div>
+
+                    <div class="form-group">
+                        <label>Company Position</label>
+                        {{ recruiter_form.company_position }}
+                    </div>
+
+                    <h3 class="section-title">
+                        <i class="fas fa-industry"></i> Company Information
+                    </h3>
+
+                    <div class="form-group">
+                        <label>Company Logo</label>
+                        {{ recruiter_form.company_logo }}
+                    </div>
+
+                    <div class="form-group">
+                        <label>Company Name</label>
+                        {{ recruiter_form.company_name }}
+                    </div>
+
+                    <div class="form-group">
+                        <label>Company Website</label>
+                        {{ recruiter_form.company_website }}
+                    </div>
+
+                    <div class="form-group">
+                        <label>Company Description</label>
+                        {{ recruiter_form.company_description }}
+                    </div>
+
+                    <div class="form-group">
+                        <label>Company Address</label>
+                        {{ recruiter_form.company_address }}
+                    </div>
+
+                    <div class="form-group">
+                        <label>Company Phone</label>
+                        {{ recruiter_form.company_phone }}
+                    </div>
+
+                    <div class="form-group">
+                        <label>Company Email</label>
+                        {{ recruiter_form.company_email }}
+                    </div>
+
+                    {% endif %}
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn-auth">
+                        <i class="fas fa-save"></i> Save Profile
+                    </button>
+
+                    <div class="auth-footer">
+                        <p><a href="{% url 'home' %}">Back to Home</a></p>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
