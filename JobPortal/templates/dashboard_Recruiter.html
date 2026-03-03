@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<main class="dashboard">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <!-- Profile Card -->
+        <div class="profile-card">
+
+            <div class="profile-top">
+                <div class="profile-avatar">
+                    {% if recruiter_profile.profile_picture %}
+                    <img src="{{ recruiter_profile.profile_picture.url }}">
+                    {% else %}
+                    <img src="{% static 'image/default_profile.svg' %}">
+                    {% endif %}
+                </div>
+
+                <div>
+                    <h3>{{ user_profile.user.username }}</h3>
+                    <p>{{ user_profile.user.email }}</p>
+                    <span class="badge">Active</span>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="profile-stats">
+                <div>
+                    <h2>85%</h2>
+                    <span>Profile Score</span>
+                </div>
+                <div>
+                    <h2>12</h2>
+                    <span>Job Post</span>
+                </div>
+            </div>
+
+            <!-- Progress -->
+            <div class="profile-progress">
+                <div class="progress-text">
+                    <span>Profile Completion</span>
+                    <strong>85%</strong>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+
+                <a href="#" class="btn-complete">Complete Profile</a>
+            </div>
+
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-section">
+            <h3>Quick Actions</h3>
+            <ul>
+                <li><a href="#"><i class="fas fa-user-edit"></i> Update Profile</a></li>
+                <li><a href="#"><i class="fas fa-pen-to-square"></i> Edit Job Post</a></li>
+                <li><a href="#"><i class="fas fa-briefcase"></i> View Job Post</a></li>
+                <li><a href="#"><i class="fas fa-users"></i> View Applications</a></li>
+            </ul>
+        </div>
+
+
+        </div>
+
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <section class="content">
+        <h2>Dashboard Content Area</h2>
+    </section>
+
+</main>
+
+{% endblock %}

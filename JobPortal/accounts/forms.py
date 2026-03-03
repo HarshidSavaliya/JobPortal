@@ -48,30 +48,12 @@ class UpdateJobSeekerProfileForm(forms.ModelForm):
         fields = [
             'profile_picture',
             'resume',
-            'skills',
-            'languages',
-            'projects',
-            'interests',
-            'hobbies',
             'work_experience',
-            'work_history',
-            'education',
-            'certifications',
-            'internships',
             'linkedin',
             'github',
         ]
         widgets = {
-            'skills': forms.Textarea,
-            'languages': forms.Textarea,
-            'projects': forms.Textarea,
-            'interests': forms.Textarea,
-            'hobbies': forms.Textarea,
             'work_experience': forms.Textarea,
-            'work_history': forms.Textarea,
-            'education': forms.Textarea,
-            'certifications': forms.Textarea,
-            'internships': forms.Textarea,
         }
 
 class UpdateRecruiterProfileForm(forms.ModelForm):
@@ -94,4 +76,3 @@ class UpdateRecruiterProfileForm(forms.ModelForm):
             'company_description': forms.Textarea,
             'company_address': forms.Textarea,
         }
-
