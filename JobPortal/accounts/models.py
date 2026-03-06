@@ -33,7 +33,7 @@ class User(models.Model):
     country = models.CharField(max_length=100, blank=True)
     zip_code = models.CharField(max_length=20, blank=True)
 
-    def full_name(self):
+    def get_full_name(self):
         return f"{self.first_name} {self.middle_name} {self.last_name}"
     
     def __str__(self):
@@ -51,7 +51,6 @@ class JobSeekerProfile(models.Model):
     # Links
     linkedin = models.URLField(blank=True)
     github = models.URLField(blank=True)
-
     
     def __str__(self):
         return f"{self.user.user.username}'s Job Seeker Profile"
@@ -76,3 +75,7 @@ class RecruiterProfile(models.Model):
 
     def __str__(self):
         return f"{self.user_profile.user.username}'s Recruiter Profile"
+
+
+# Backward-compatible alias for existing imports/usages.
+UserProfile = User

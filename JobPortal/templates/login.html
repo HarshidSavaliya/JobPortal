@@ -36,14 +36,14 @@
                 </div>
                 {% endif %}
 
-                <form method="POST" novalidate>
+                <form class="login-form" method="POST" novalidate>
                     {% csrf_token %}
 
                     <!-- Username Field -->
                     <div class="form-group">
                         <label for="username">
                             <i class="fas fa-user"></i>
-                            Username or Email
+                            Username
                         </label>
                         <div class="input-wrapper">
                             <i class="fas fa-user input-icon"></i>
@@ -88,30 +88,7 @@
             </div>
         </div>
 
-        <!-- Features Section -->
-        <div class="auth-features">
-            <div class="feature-item">
-                <i class="fas fa-shield-alt"></i>
-                <div>
-                    <h4>Secure Login</h4>
-                    <p>256-bit encrypted connection</p>
-                </div>
-            </div>
-            <div class="feature-item">
-                <i class="fas fa-clock"></i>
-                <div>
-                    <h4>Quick Access</h4>
-                    <p>One-click login with saved credentials</p>
-                </div>
-            </div>
-            <div class="feature-item">
-                <i class="fas fa-headset"></i>
-                <div>
-                    <h4>24/7 Support</h4>
-                    <p>We're here to help anytime</p>
-                </div>
-            </div>
-        </div>
+
     </div>
 </body>
 

@@ -58,21 +58,60 @@
         <div class="quick-section">
             <h3>Quick Actions</h3>
             <ul>
-                <li><a href="#"><i class="fas fa-user-edit"></i> Update Profile</a></li>
+                <li><a href="{% url 'update_profile' %}"><i class="fas fa-user-edit"></i> Update Profile</a></li>
                 <li><a href="#"><i class="fas fa-pen-to-square"></i> Edit Job Post</a></li>
                 <li><a href="#"><i class="fas fa-briefcase"></i> View Job Post</a></li>
                 <li><a href="#"><i class="fas fa-users"></i> View Applications</a></li>
             </ul>
         </div>
-
-
-        </div>
-
     </aside>
-
     <!-- MAIN CONTENT -->
     <section class="content">
-        <h2>Dashboard Content Area</h2>
+        <h1>Welcome back, {{ user_profile.user.first_name }}!</h1>
+
+        <div class="dashboard-cards">
+            <div class="card">
+                <div class="card-icon">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+                <div class="card-info">
+                    <h3>{{ job_post_count }}</h3>
+                    <span>Total Job Posts</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="card-info">
+                    <h3>{{ application_count }}</h3>
+                    <span>Total Applications</span>
+                </div>
+            </div>
+
+            <div class="card ">
+                <div class="card-icon">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <div class="card-info">
+                    <h3>{{ profile_view_count }}</h3>
+                    <span>Profile Views</span>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="card-info">
+                    <h3>{{ message_count }}</h3>
+                    <span>Total Messages</span>
+                </div>
+            </div>
+        </div>
+        <div class="auth-footer">
+            <p><a href="{% url 'home' %}">Back to Home</a></p>
+        </div>
     </section>
 
 </main>
